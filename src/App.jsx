@@ -1,22 +1,26 @@
-
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
-import Dashboard from './pages/Dashboard';
-import BusinessProfile from './pages/BusinessProfile';
+import BusinessDashboard from './pages/BusinessDashboard';
+import UserDashboard from './pages/UserDashboard';
 
 function App() {
+  const role = localStorage.getItem('role');
+  
   return (
     <Router>
-      <div className="min-h-screen bg-gray-100 font-sans">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<BusinessProfile />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route 
+          path="/dashboard" 
+          element={
+            role === 'business' ? <BusinessDashboard /> : 
+            role === 'user' ? <UserDashboard /> : 
+            <Navigate to="/login" />
+          } 
+        />
+      </Routes>
     </Router>
   );
 }
